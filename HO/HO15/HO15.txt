@@ -1,0 +1,49 @@
+1)
+
+
+2PL: l3(y), r3(y), l2(z), r2(z), l1(x), r1(x), l2(x), r2(x), l3(z), r3(z), l2(y),
+r2(y), w3(x), l1(y), r1(y), w2(z), u2(z), u2(x), u2(y), w1(x), l3(x), r3(x),
+u3(y), u3(z), u3(x), l1(z), r1(z), u1(x), u1(y), u1(x)
+
+
+Deadlock - Entre transações
+
+T1 e T2 —> l2(x) (tem que) aguarda(r) l1(x)
+T1 e T3 —> l3(x) (tem que) aguarda(r) l1(x)
+ l1(y) (tem que) aguarda(r) l3(y)
+T2 e T3 —> l2(y) (tem que) aguarda(r) l3(y)
+ l3(z) (tem que) aguarda(r) l2(z)
+
+Detecção:
+l3(y), r3(y), l2(z), r2(z), l2(x), r2(x), l3(z), r3(z), l2(y), r2(y), w3(x), w2(z),
+l1(y), r1(y), u2(z), u2(x), u2(y), w1(x), l3(x), r3(x), u3(y), u3(z), u3(x)
+T1 reescalonado (impasses aqui)
+l3(y), r3(y), l3(z), r3(z), w3(y), l3(x), r3(x), u3(y), u3(z), u3(x) —> T2
+reescalonado
+
+ 
+
+2)
+
+Há deadlock quando T3 tenta o bloqueio y para a escrita o que T2
+por leitura bloqueia antes, e T3 bloqueia z para leitura antes de T2
+bloquear z por escrita e T1 tenta bloquear x na escrita, mas, T2
+bloqueia na leitura.
+
+
+Assim, há 3 transações paradas, reeslocamento por timestamp:
+(tenta) eliminar o deadlock:
+
+
+l3(y), r3(y), l2(z), r2(z), l2(x), r2(x), l3(z), r3(z), l2(y), r2(y), w3(x), w2(z),
+l1(y), r1(y), u2(z), u2(x), u2(y), w1(x), l3(x), r3(x), u3(y), u3(z), u3(x)
+T1 reescalonado (impasses aqui)
+l3(y), r3(y), l3(z), r3(z), w3(y), l3(x), r3(x), u3(y), u3(z), u3(x) —> T2
+reescalonado
+
+ 
+
+3)
+
+T1: rl(Y); r(Y); ul(Y); wl(X); r(X); X=X+Y; w(X);ul(X)
+T2: rl(X);r(X); Ul(X); wl(X); r(Y); Y=X+Y; w(Y); Ul(Y
